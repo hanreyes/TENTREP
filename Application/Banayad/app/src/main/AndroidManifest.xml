@@ -18,7 +18,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".ShoppingActivity" />
-        <activity android:name=".SigninActivity"></activity>
+        <activity android:name=".SigninActivity" />
+        <activity
+            android:name=".NavigationDrawerActivity"
+            android:label="@string/title_activity_navigation_drawer"
+            android:theme="@style/Banayad"></activity>
     </application>
 
 </manifest>

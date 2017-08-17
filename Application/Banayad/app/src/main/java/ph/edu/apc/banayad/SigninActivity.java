@@ -19,25 +19,31 @@ public class SigninActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
 
+    EditText signupEmail, signupPassword;
+    String email, password;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signin);
 
-        final EditText signupEmail = (EditText) findViewById(R.id.editText_signup_email);
-        final EditText signupPassword = (EditText) findViewById(R.id.editText_signup_password);
+        mAuth = FirebaseAuth.getInstance();
+
+        signupEmail = (EditText) findViewById(R.id.editText_signup_email);
+        signupPassword = (EditText) findViewById(R.id.editText_signup_password);
         Button btnSignup = (Button) findViewById(R.id.button_login);
         btnSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String email = String.valueOf(signupEmail.getText());
-                String password = String.valueOf(signupPassword.getText());
+                email = String.valueOf(signupEmail.getText());
+                password = String.valueOf(signupPassword.getText());
                 createAccount(email, password);
             }
         });
     }
 
     private void createAccount(String email, String password) {
+        Log.d("Signin", "Credentials:" + email + ", " + password);
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
