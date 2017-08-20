@@ -22,7 +22,7 @@
         <activity
             android:name=".NavigationDrawerActivity"
             android:label="@string/title_activity_navigation_drawer"
-            android:theme="@style/Banayad"></activity>
+            android:theme="@style/Banayad"/>
     </application>
 
 </manifest>

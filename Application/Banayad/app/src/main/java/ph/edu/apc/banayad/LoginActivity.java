@@ -34,11 +34,11 @@ public class LoginActivity extends AppCompatActivity implements
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
-    EditText loginEmail, loginPassword;
-    TextView noAccount, signUp;
-    String email, password;
-    ProgressBar progressBar;
-    View view = findViewById(R.id.login_layout);
+    private EditText loginEmail, loginPassword;
+    private TextView noAccount, signUp;
+    private String email, password;
+    private ProgressBar progressBar;
+    View view;
 
     GoogleApiClient mGoogleApiClient;
 
@@ -82,18 +82,21 @@ public class LoginActivity extends AppCompatActivity implements
                     //Toast.makeText(LoginActivity.this, "Please login to continue", Toast.LENGTH_SHORT).show();
                     Log.d("AuthStateListener", "onAuthStateChanged:signed_out");
                 }
+
+                loginEmail = (EditText) findViewById(R.id.editText_login_email);
+                loginPassword = (EditText) findViewById(R.id.editText_login_password);
+                noAccount = (TextView) findViewById(R.id.textView_no_account);
+                signUp = (TextView) findViewById(R.id.textView_signup);
+                progressBar = (ProgressBar) findViewById(R.id.login_progressBar);
+
+
+                SignInButton signInButton = (SignInButton) findViewById(R.id.sign_in_button);
+                signInButton.setSize(SignInButton.COLOR_AUTO);
+
+
             }
         };
-
-        loginEmail = (EditText) findViewById(R.id.editText_login_email);
-        loginPassword = (EditText) findViewById(R.id.editText_login_password);
-        noAccount = (TextView) findViewById(R.id.textView_no_account);
-        signUp = (TextView) findViewById(R.id.textView_signup);
-        progressBar = (ProgressBar) findViewById(R.id.login_progressBar);
-
-        SignInButton signInButton = (SignInButton) findViewById(R.id.sign_in_button);
-        signInButton.setSize(SignInButton.COLOR_AUTO);
-
+        view = findViewById(R.id.login_layout);
         findViewById(R.id.sign_in_button).setOnClickListener(this);
         findViewById(R.id.button_login).setOnClickListener(this);
         findViewById(R.id.textView_no_account).setOnClickListener(this);
@@ -198,7 +201,7 @@ public class LoginActivity extends AppCompatActivity implements
             public void run() {
                 
             }
-        })
+        });
     }
 
     @Override
