@@ -2,12 +2,13 @@ package ph.edu.apc.banayad;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,8 +19,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -38,6 +37,8 @@ public class LoginActivity extends AppCompatActivity implements
     EditText loginEmail, loginPassword;
     TextView noAccount, signUp;
     String email, password;
+    ProgressBar progressBar;
+    View view = findViewById(R.id.login_layout);
 
     GoogleApiClient mGoogleApiClient;
 
@@ -72,12 +73,13 @@ public class LoginActivity extends AppCompatActivity implements
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
-                    Intent intent = new Intent(LoginActivity.this, NavigationDrawerActivity.class);
-                    startActivity(intent);
+                    Intent mainIntent = new Intent(LoginActivity.this, NavigationDrawerActivity.class);
+                    startActivity(mainIntent);
                     Log.d("AuthStateListener", "onAuthStateChanged:signed_in:" + user.getUid());
                 } else {
-                    Toast.makeText(LoginActivity.this,
-                            "Please login to continue", Toast.LENGTH_SHORT).show();
+                    showSnackbar(view, "Please login to continue",
+                            Snackbar.LENGTH_SHORT);
+                    //Toast.makeText(LoginActivity.this, "Please login to continue", Toast.LENGTH_SHORT).show();
                     Log.d("AuthStateListener", "onAuthStateChanged:signed_out");
                 }
             }
@@ -87,41 +89,15 @@ public class LoginActivity extends AppCompatActivity implements
         loginPassword = (EditText) findViewById(R.id.editText_login_password);
         noAccount = (TextView) findViewById(R.id.textView_no_account);
         signUp = (TextView) findViewById(R.id.textView_signup);
+        progressBar = (ProgressBar) findViewById(R.id.login_progressBar);
 
-        Button btnLogin = (Button) findViewById(R.id.button_login);
         SignInButton signInButton = (SignInButton) findViewById(R.id.sign_in_button);
         signInButton.setSize(SignInButton.COLOR_AUTO);
 
-        final Intent signupIntent = new Intent(LoginActivity.this, SigninActivity.class);
-
-        //button listeners
-        btnLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                email = String.valueOf(loginEmail.getText());
-                password = String.valueOf(loginPassword.getText());
-                if (email.isEmpty() || password.isEmpty()) {
-                    Toast.makeText(LoginActivity.this,
-                            "Please enter email and password", Toast.LENGTH_SHORT).show();
-                } else {
-                    loginUser(email, password);
-                }
-            }
-        });
-        noAccount.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(signupIntent);
-            }
-        });
-        signUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(signupIntent);
-            }
-        });
-
         findViewById(R.id.sign_in_button).setOnClickListener(this);
+        findViewById(R.id.button_login).setOnClickListener(this);
+        findViewById(R.id.textView_no_account).setOnClickListener(this);
+        findViewById(R.id.textView_signup).setOnClickListener(this);
     }
 
     @Override
@@ -170,9 +146,8 @@ public class LoginActivity extends AppCompatActivity implements
                                     Toast.LENGTH_SHORT).show();
                         } else {
                             Log.d("loginUser", "signInWithEmail:onComplete:" + task.isSuccessful());
-                            Intent intent = new Intent(LoginActivity.this,
-                                    NavigationDrawerActivity.class);
-                            startActivity(intent);
+                            Intent mainIntent = new Intent(LoginActivity.this, NavigationDrawerActivity.class);
+                            startActivity(mainIntent);
                             finish();
                         }
                     }
@@ -193,8 +168,8 @@ public class LoginActivity extends AppCompatActivity implements
                         if (task.isSuccessful()) {
                             // Signin success
                             Log.d("loginUser", "signInWithEmail:onComplete:" + task.isSuccessful());
-                            Intent intent = new Intent(LoginActivity.this, NavigationDrawerActivity.class);
-                            startActivity(intent);
+                            Intent mainIntent = new Intent(LoginActivity.this, NavigationDrawerActivity.class);
+                            startActivity(mainIntent);
                             finish();
                         } else {
                             Toast.makeText(LoginActivity.this,
@@ -213,11 +188,44 @@ public class LoginActivity extends AppCompatActivity implements
         Toast.makeText(this, "Google Play Services error.", Toast.LENGTH_SHORT).show();
     }
 
+    public static void showSnackbar(View view, String message, int duration) {
+        Snackbar.make(view, message, duration).show();
+    }
+
+    public void showProgress() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                
+            }
+        })
+    }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+            // google sign in - firebase
             case R.id.sign_in_button:
                 signIn();
+                break;
+            // sign in with email and password - firebase
+            case R.id.button_login:
+                email = String.valueOf(loginEmail.getText());
+                password = String.valueOf(loginPassword.getText());
+                if (email.isEmpty() || password.isEmpty()) {
+                    Toast.makeText(LoginActivity.this,
+                            "Please enter email and password", Toast.LENGTH_SHORT).show();
+                } else {
+                    loginUser(email, password);
+                }
+                break;
+            case R.id.textView_no_account:
+                Intent signupIntent = new Intent(LoginActivity.this, SigninActivity.class);
+                startActivity(signupIntent);
+                break;
+            case R.id.textView_signup:
+                signupIntent = new Intent(LoginActivity.this, SigninActivity.class);
+                startActivity(signupIntent);
                 break;
         }
     }

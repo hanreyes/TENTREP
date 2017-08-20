@@ -18,4 +18,8 @@
 
     <style name="Banayad.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="backArrowTheme" parent="AppTheme">
+        <item name="android:textColorSecondary">#FFFFFF</item>
+    </style>
+
 </resources>
