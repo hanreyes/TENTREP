@@ -22,7 +22,8 @@
         <activity
             android:name=".NavigationDrawerActivity"
             android:label="@string/title_activity_navigation_drawer"
-            android:theme="@style/Banayad"/>
+            android:theme="@style/Banayad" />
+        <activity android:name=".Scanning"></activity>
     </application>
-
+    <uses-permission android:name="android.permission.CAMERA" />
 </manifest>
