@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "581479711611",
+    "firebase_url": "https://banayad-777ab.firebaseio.com",
+    "project_id": "banayad-777ab",
+    "storage_bucket": "banayad-777ab.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:581479711611:android:142d1c46d2af012d",
+        "android_client_info": {
+          "package_name": "ph.edu.apc.banayad"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "581479711611-9hs37k3ce85tjc9224210e5ss959uu4b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ph.edu.apc.banayad",
+            "certificate_hash": "6606d1a0f28e8ba3bc1f0f62998dcba814291665"
+          }
+        },
+        {
+          "client_id": "581479711611-6o95pdbavtaone528l6coqvip20j52hu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCmmKPfjCB4gH9n3eHNTVfJM60UABZ7I5k"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "581479711611-6o95pdbavtaone528l6coqvip20j52hu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Banayad</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="cart_page_title">Cart</string>
+    <string name="item_page_title">Item</string>
+    <string name="checkout_page_title">Checkout</string>
+    <string name="title_activity_navigation_drawer">NavigationDrawerActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+</resources>
