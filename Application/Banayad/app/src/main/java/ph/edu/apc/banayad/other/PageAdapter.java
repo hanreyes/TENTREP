@@ -1,5 +1,6 @@
 package ph.edu.apc.banayad.other;
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -15,8 +16,14 @@ import ph.edu.apc.banayad.fragment.ItemsFragment;
  */
 
 public class PageAdapter extends FragmentPagerAdapter {
-    public PageAdapter(FragmentManager fm){
+
+    private String[] tabTitle = new String[]{"Items", "Cart", "Checkout"};
+    private int pageCount = tabTitle.length;
+    Context context;
+
+    public PageAdapter(FragmentManager fm, Context context){
         super(fm);
+        this.context = context;
     }
 
     public Fragment getItem(int i){
@@ -36,19 +43,12 @@ public class PageAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 3;
+        return pageCount;
     }
+
 
     public CharSequence getPageTitle(int position){
         Locale l = Locale.getDefault();
-        switch(position){
-            case 0:
-                return "Items";
-            case 1:
-                return "Cart";
-            case 2:
-                return "Checkout";
-        }
-        return null;
+        return tabTitle[position];
     }
 }

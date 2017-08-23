@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
-        PageAdapter adapter = new PageAdapter(getSupportFragmentManager());
+        PageAdapter adapter = new PageAdapter(getSupportFragmentManager(), this);
         viewPager = (ViewPager) findViewById(R.id.pager);
         viewPager.setAdapter(adapter);
         pagerTabStrip = (PagerTabStrip) findViewById(R.id.tab_strip);

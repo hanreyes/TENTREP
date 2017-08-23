@@ -29,7 +29,7 @@ CheckoutFragment.OnFragmentInteractionListener, ItemsFragment.OnFragmentInteract
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shopping);
 
-        pageAdapter = new PageAdapter(getSupportFragmentManager());
+        pageAdapter = new PageAdapter(getSupportFragmentManager(), this);
 
         // Initialize viewPager
         viewPager = (ViewPager) findViewById(R.id.pager);
