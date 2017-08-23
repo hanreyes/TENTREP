@@ -9,21 +9,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Banayad">
-        <activity android:name=".MainActivity" />
-        <activity android:name=".LoginActivity">
+        <activity android:name=".activity.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ShoppingActivity" />
-        <activity android:name=".SigninActivity" />
+        <activity android:name=".activity.ShoppingActivity" />
+        <activity android:name=".activity.SigninActivity" />
         <activity
-            android:name=".NavigationDrawerActivity"
+            android:name=".activity.MainActivity"
             android:label="@string/title_activity_navigation_drawer"
             android:theme="@style/Banayad" />
-        <activity android:name=".Scanning"></activity>
+        <activity android:name=".other.Scanning"></activity>
     </application>
     <uses-permission android:name="android.permission.CAMERA" />
 </manifest>

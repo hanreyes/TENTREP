@@ -1,4 +1,4 @@
-package ph.edu.apc.banayad;
+package ph.edu.apc.banayad.other;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -6,12 +6,16 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import java.util.Locale;
 
+import ph.edu.apc.banayad.fragment.CartFragment;
+import ph.edu.apc.banayad.fragment.CheckoutFragment;
+import ph.edu.apc.banayad.fragment.ItemsFragment;
+
 /**
  * Created by gc on 8/20/2017.
  */
 
-public class page_adapter extends FragmentPagerAdapter {
-    public page_adapter(FragmentManager fm){
+public class PageAdapter extends FragmentPagerAdapter {
+    public PageAdapter(FragmentManager fm){
         super(fm);
     }
 

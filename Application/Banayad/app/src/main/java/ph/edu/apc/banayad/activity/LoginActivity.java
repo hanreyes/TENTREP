@@ -1,4 +1,4 @@
-package ph.edu.apc.banayad;
+package ph.edu.apc.banayad.activity;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -26,6 +26,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+
+import ph.edu.apc.banayad.R;
 
 public class LoginActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener,
@@ -73,7 +75,7 @@ public class LoginActivity extends AppCompatActivity implements
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
-                    Intent mainIntent = new Intent(LoginActivity.this, NavigationDrawerActivity.class);
+                    Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(mainIntent);
                     Log.d("AuthStateListener", "onAuthStateChanged:signed_in:" + user.getUid());
                 } else {
@@ -88,12 +90,8 @@ public class LoginActivity extends AppCompatActivity implements
                 noAccount = (TextView) findViewById(R.id.textView_no_account);
                 signUp = (TextView) findViewById(R.id.textView_signup);
                 progressBar = (ProgressBar) findViewById(R.id.login_progressBar);
-
-
                 SignInButton signInButton = (SignInButton) findViewById(R.id.sign_in_button);
                 signInButton.setSize(SignInButton.COLOR_AUTO);
-
-
             }
         };
         view = findViewById(R.id.login_layout);
@@ -149,7 +147,7 @@ public class LoginActivity extends AppCompatActivity implements
                                     Toast.LENGTH_SHORT).show();
                         } else {
                             Log.d("loginUser", "signInWithEmail:onComplete:" + task.isSuccessful());
-                            Intent mainIntent = new Intent(LoginActivity.this, NavigationDrawerActivity.class);
+                            Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
                             startActivity(mainIntent);
                             finish();
                         }
@@ -171,7 +169,7 @@ public class LoginActivity extends AppCompatActivity implements
                         if (task.isSuccessful()) {
                             // Signin success
                             Log.d("loginUser", "signInWithEmail:onComplete:" + task.isSuccessful());
-                            Intent mainIntent = new Intent(LoginActivity.this, NavigationDrawerActivity.class);
+                            Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
                             startActivity(mainIntent);
                             finish();
                         } else {

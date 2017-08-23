@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="ph.edu.apc.banayad.MainActivity">
+    android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/my_toolbar"
@@ -13,34 +12,31 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
-        android:elevation="4dp"
+        android:elevation="0dp"
         android:minHeight="56dp"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
-        android:theme="@style/AppTheme"
+        android:theme="@style/backArrowTheme"
         android:title="Banayad"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:title="Banayad"
-        app:titleMarginStart="40dp"
         app:titleTextColor="@android:color/background_light" />
+
+    <include layout="@layout/content_main" />
 
     <android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:id="@+id/pager"
-        tools:context=".MainActivity">
+        android:id="@+id/pager">
 
         <android.support.v4.view.PagerTabStrip
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:background="@color/colorPrimary"
             android:id="@+id/tab_strip"
-            android:focusableInTouchMode="false">
-
-        </android.support.v4.view.PagerTabStrip>
-
-
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:elevation="4dp"
+            android:focusableInTouchMode="false" />
 
     </android.support.v4.view.ViewPager>
 

@@ -1,17 +1,13 @@
-package ph.edu.apc.banayad;
+package ph.edu.apc.banayad.activity;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -20,6 +16,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -30,9 +27,21 @@ import com.google.android.gms.common.api.Status;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class NavigationDrawerActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener, CartFragment.OnFragmentInteractionListener,
-        CheckoutFragment.OnFragmentInteractionListener, ItemsFragment.OnFragmentInteractionListener{
+import ph.edu.apc.banayad.R;
+import ph.edu.apc.banayad.fragment.CartFragment;
+import ph.edu.apc.banayad.fragment.CheckoutFragment;
+import ph.edu.apc.banayad.fragment.HomeFragment;
+import ph.edu.apc.banayad.fragment.ItemsFragment;
+import ph.edu.apc.banayad.other.PageAdapter;
+
+public class MainActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener,
+        GoogleApiClient.OnConnectionFailedListener,
+        CartFragment.OnFragmentInteractionListener,
+        CheckoutFragment.OnFragmentInteractionListener,
+        ItemsFragment.OnFragmentInteractionListener,
+        HomeFragment.OnFragmentInteractionListener,
+        View.OnClickListener {
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -44,25 +53,16 @@ public class NavigationDrawerActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_navigation_drawer);
+        setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
 
         mAuth = FirebaseAuth.getInstance();
 
-        /**FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });**/
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+        drawer.addDrawerListener(toggle);
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -81,7 +81,7 @@ public class NavigationDrawerActivity extends AppCompatActivity
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
-        page_adapter adapter = new page_adapter(getSupportFragmentManager());
+        PageAdapter adapter = new PageAdapter(getSupportFragmentManager());
         viewPager = (ViewPager) findViewById(R.id.pager);
         viewPager.setAdapter(adapter);
         pagerTabStrip = (PagerTabStrip) findViewById(R.id.tab_strip);
@@ -93,10 +93,17 @@ public class NavigationDrawerActivity extends AppCompatActivity
         super.onStart();
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser == null) {
-            Intent intent = new Intent(NavigationDrawerActivity.this, LoginActivity.class);
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(intent);
             finish();
         }
+        HomeFragment homeFragment = new HomeFragment();
+        FragmentManager fm = getSupportFragmentManager();
+        fm.beginTransaction().replace(
+                R.id.layout_fragment,
+                homeFragment,
+                homeFragment.getTag()
+        ).commit();
     }
 
     @Override
@@ -161,7 +168,7 @@ public class NavigationDrawerActivity extends AppCompatActivity
     private void signOut() {
         // Firebase sign out
         FirebaseAuth.getInstance().signOut();
-        Intent intent = new Intent (NavigationDrawerActivity.this, LoginActivity.class);
+        Intent intent = new Intent (MainActivity.this, LoginActivity.class);
         startActivity(intent);
         finish();
         // Google sign out
@@ -170,7 +177,7 @@ public class NavigationDrawerActivity extends AppCompatActivity
                     @Override
                     public void onResult(@NonNull Status status) {
                         Intent intent = new Intent
-                                (NavigationDrawerActivity.this, LoginActivity.class);
+                                (MainActivity.this, LoginActivity.class);
                         startActivity(intent);
                         finish();
                     }
@@ -185,5 +192,11 @@ public class NavigationDrawerActivity extends AppCompatActivity
     @Override
     public void onFragmentInteraction(Uri uri) {
 
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+        }
     }
 }

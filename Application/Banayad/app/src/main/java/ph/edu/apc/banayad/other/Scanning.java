@@ -1,12 +1,12 @@
-package ph.edu.apc.banayad;
+package ph.edu.apc.banayad.other;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import android.util.Log;
 import com.google.zxing.Result;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
+import ph.edu.apc.banayad.fragment.CartFragment;
 
 public class Scanning extends AppCompatActivity implements ZXingScannerView.ResultHandler{
 

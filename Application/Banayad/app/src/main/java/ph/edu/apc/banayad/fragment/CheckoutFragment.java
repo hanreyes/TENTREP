@@ -1,4 +1,4 @@
-package ph.edu.apc.banayad;
+package ph.edu.apc.banayad.fragment;
 
 import android.content.Context;
 import android.net.Uri;
@@ -7,6 +7,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import ph.edu.apc.banayad.R;
 
 
 /**

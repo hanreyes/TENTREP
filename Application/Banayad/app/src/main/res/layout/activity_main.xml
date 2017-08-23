@@ -1,46 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="ph.edu.apc.banayad.MainActivity">
+    android:fitsSystemWindows="true"
+    tools:openDrawer="start">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/my_toolbar"
-        style="@style/AppTheme"
+    <include
+        layout="@layout/app_bar_main"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        android:elevation="4dp"
-        android:minHeight="56dp"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:theme="@style/AppTheme"
-        android:title="Banayad"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        app:title="Banayad"
-        app:titleMarginStart="40dp"
-        app:titleTextColor="@android:color/background_light" />
+        android:layout_height="match_parent" />
 
-    <android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:id="@+id/pager">
+    <android.support.design.widget.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:fitsSystemWindows="true"
+        app:headerLayout="@layout/nav_header_navigation_drawer"
+        app:menu="@menu/activity_navigation_drawer_drawer" />
 
-        <android.support.v4.view.PagerTabStrip
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:background="@color/colorPrimary"
-            android:id="@+id/tab_strip"
-            android:focusableInTouchMode="false">
-
-        </android.support.v4.view.PagerTabStrip>
-
-
-
-    </android.support.v4.view.ViewPager>
-
-</LinearLayout>
+</android.support.v4.widget.DrawerLayout>
