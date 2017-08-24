@@ -1,5 +1,6 @@
 package ph.edu.apc.banayad.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.design.widget.FloatingActionButton;
@@ -10,9 +11,15 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import ph.edu.apc.banayad.R;
 import ph.edu.apc.banayad.fragment.CartFragment;
@@ -28,14 +35,27 @@ CheckoutFragment.OnFragmentInteractionListener, ItemsFragment.OnFragmentInteract
     ViewPager viewPager;
     TabLayout tabLayout;
 
+    private FirebaseAuth mAuth;
+    private FirebaseUser user;
+
+    public static String currentTransaction;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shopping);
 
+        mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        currentTransaction = database.getReference("user")
+                .child(user.getUid())
+                .child("transactions")
+                .push().getKey();
+
         pageAdapter = new PageAdapter(getSupportFragmentManager(), this);
 
-        // Initialize viewPager
         viewPager = (ViewPager) findViewById(R.id.pager);
         viewPager.setAdapter(pageAdapter);
 
@@ -43,7 +63,6 @@ CheckoutFragment.OnFragmentInteractionListener, ItemsFragment.OnFragmentInteract
         tabLayout.setupWithViewPager(viewPager);
 
         findViewById(R.id.btn_scan).setOnClickListener(this);
-
     }
 
     @Override
@@ -66,6 +85,35 @@ CheckoutFragment.OnFragmentInteractionListener, ItemsFragment.OnFragmentInteract
 
     @Override
     public void onFragmentInteraction(Uri uri) {
+    }
+
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+        AlertDialog.Builder builder = new AlertDialog.Builder(ShoppingActivity.this);
+        builder.setMessage("This will delete current cart items.").setTitle("End this session?");
+        // Alert Dialog buttons
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Intent intent = new Intent(ShoppingActivity.this, MainActivity.class);
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                database.getReference("user")
+                        .child(user.getUid())
+                        .child("transactions")
+                        .child(currentTransaction).removeValue();
+                startActivity(intent);
+                finish();
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     @Override

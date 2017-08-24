@@ -26,6 +26,8 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import ph.edu.apc.banayad.R;
 import ph.edu.apc.banayad.fragment.CartFragment;
@@ -45,6 +47,7 @@ public class MainActivity extends AppCompatActivity
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+    private FirebaseUser user;
 
     GoogleApiClient mGoogleApiClient;
     ViewPager viewPager;
@@ -58,6 +61,7 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         mAuth = FirebaseAuth.getInstance();
+        user =  mAuth.getCurrentUser();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -86,6 +90,13 @@ public class MainActivity extends AppCompatActivity
         viewPager.setAdapter(adapter);
         pagerTabStrip = (PagerTabStrip) findViewById(R.id.tab_strip);
         pagerTabStrip.setTextColor(Color.WHITE);
+
+        // add the user to firebase db
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("user").child(user.getUid());
+
+        myRef.child("name").setValue(user.getDisplayName());
+        myRef.child("email").setValue(user.getEmail());
     }
 
     @Override
