@@ -70,15 +70,6 @@ public class ItemsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_items, container, false);
-        //action button para sa barcode scanner
-        FloatingActionButton fab = (FloatingActionButton) v.findViewById(R.id.btn_scan);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent in = new Intent(getActivity(), Scanning.class);
-                startActivity(in);
-            }
-        });
         return v;
     }
 

@@ -1,6 +1,8 @@
 package ph.edu.apc.banayad.activity;
 
+import android.content.Intent;
 import android.net.Uri;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -10,15 +12,17 @@ import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import ph.edu.apc.banayad.R;
 import ph.edu.apc.banayad.fragment.CartFragment;
 import ph.edu.apc.banayad.fragment.CheckoutFragment;
 import ph.edu.apc.banayad.fragment.ItemsFragment;
 import ph.edu.apc.banayad.other.PageAdapter;
+import ph.edu.apc.banayad.other.Scanning;
 
 public class ShoppingActivity extends FragmentActivity implements CartFragment.OnFragmentInteractionListener,
-CheckoutFragment.OnFragmentInteractionListener, ItemsFragment.OnFragmentInteractionListener{
+CheckoutFragment.OnFragmentInteractionListener, ItemsFragment.OnFragmentInteractionListener, View.OnClickListener{
 
     PageAdapter pageAdapter ;
     ViewPager viewPager;
@@ -37,6 +41,8 @@ CheckoutFragment.OnFragmentInteractionListener, ItemsFragment.OnFragmentInteract
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
+
+        findViewById(R.id.btn_scan).setOnClickListener(this);
 
     }
 
@@ -62,4 +68,12 @@ CheckoutFragment.OnFragmentInteractionListener, ItemsFragment.OnFragmentInteract
     public void onFragmentInteraction(Uri uri) {
     }
 
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.btn_scan:
+                Intent in = new Intent(ShoppingActivity.this, Scanning.class);
+                startActivity(in);
+        }
+    }
 }
