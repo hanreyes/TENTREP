@@ -4,12 +4,24 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import ph.edu.apc.banayad.R;
+import ph.edu.apc.banayad.models.Item;
+
+import static ph.edu.apc.banayad.activity.ShoppingActivity.currentTransaction;
+import static ph.edu.apc.banayad.activity.ShoppingActivity.status;
 
 
 /**
@@ -63,15 +75,67 @@ public class CartFragment extends Fragment {
         }
     }
 
-    public static TextView tvresult;
+    private FirebaseAuth mAuth;
+    private FirebaseUser user;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_cart, container, false);
-        //dito yung madisplay yung na scan
-        tvresult = (TextView)v.findViewById(R.id.tvresult);
-        return v;
+        View rootView = inflater.inflate(R.layout.fragment_cart, container, false);
+
+        RecyclerView itemsCart = (RecyclerView) rootView.findViewById(R.id.recyclerViewItems);
+        itemsCart.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("user");
+
+        if (status == 1) {
+            FirebaseRecyclerAdapter<Item, CartHolder> adapter =
+                    new FirebaseRecyclerAdapter<Item, CartHolder>(
+                            Item.class,
+                            R.layout.cart_view_holder,
+                            CartHolder.class,
+                            ref.child(user.getUid())
+                                    .child("transactions")
+                                    .child(currentTransaction)) {
+                        @Override
+                        protected void populateViewHolder(CartHolder viewHolder, Item model, int position) {
+                            viewHolder.setItemBarcode(model.getItemBarcode());
+                            viewHolder.setItemName(model.getItemName());
+                            viewHolder.setItemPrice(model.getItemPrice());
+                        }
+                    };
+            itemsCart.setAdapter(adapter);
+        }
+        return rootView;
+    }
+
+    public static class CartHolder extends RecyclerView.ViewHolder {
+        private final TextView itemBarcode;
+        private final TextView itemName;
+        private final TextView itemPrice;
+
+        public CartHolder(View itemView) {
+            super(itemView);
+            itemBarcode = (TextView) itemView.findViewById(R.id.textViewQuantity);
+            itemName = (TextView) itemView.findViewById(R.id.textViewItemName);
+            itemPrice = (TextView) itemView.findViewById(R.id.textViewPrice);
+        }
+
+        public void setItemBarcode(String itemBarcode) {
+            this.itemBarcode.setText(itemBarcode);
+        }
+
+        public void setItemName(String itemName) {
+            this.itemName.setText(itemName);
+        }
+
+        public void setItemPrice(String itemPrice) {
+            this.itemPrice.setText(itemPrice);
+        }
     }
 
     // TODO: Rename method, update argument and hook method into UI event

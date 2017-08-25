@@ -25,6 +25,7 @@ import ph.edu.apc.banayad.R;
 import ph.edu.apc.banayad.fragment.CartFragment;
 import ph.edu.apc.banayad.fragment.CheckoutFragment;
 import ph.edu.apc.banayad.fragment.ItemsFragment;
+import ph.edu.apc.banayad.models.Item;
 import ph.edu.apc.banayad.other.PageAdapter;
 import ph.edu.apc.banayad.other.Scanning;
 
@@ -39,6 +40,7 @@ CheckoutFragment.OnFragmentInteractionListener, ItemsFragment.OnFragmentInteract
     private FirebaseUser user;
 
     public static String currentTransaction;
+    public static int status = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
