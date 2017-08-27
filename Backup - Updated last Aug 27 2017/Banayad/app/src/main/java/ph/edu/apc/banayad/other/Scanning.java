@@ -1,10 +1,7 @@
 package ph.edu.apc.banayad.other;
 
-import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -34,18 +31,10 @@ public class Scanning extends AppCompatActivity implements ZXingScannerView.Resu
     private ZXingScannerView mScannerView;
     private FirebaseUser user;
     private FirebaseAuth mAuth;
-    private static int MY_PERMISSIONS_REQUEST_CAMERA;
-
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onCreate(Bundle state) {
         super.onCreate(state);
-        if(ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) !=
-                PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.CAMERA},
-                    MY_PERMISSIONS_REQUEST_CAMERA);
-        }
-
         mScannerView = new ZXingScannerView(this);   // Programmatically initialize the scanner view
         setContentView(mScannerView);                // Set the scanner view as the content view
 

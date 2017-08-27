@@ -1,52 +1,40 @@
 package ph.edu.apc.banayad.fragment;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.media.Image;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
-
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.MultiFormatWriter;
-import com.google.zxing.WriterException;
-import com.google.zxing.common.BitMatrix;
-import com.journeyapps.barcodescanner.BarcodeEncoder;
-
-import org.w3c.dom.Text;
 
 import ph.edu.apc.banayad.R;
+import ph.edu.apc.banayad.other.Scanning;
 
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link CheckoutFragment.OnFragmentInteractionListener} interface
+ * {@link ItemsFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link CheckoutFragment#newInstance} factory method to
+ * Use the {@link ItemsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CheckoutFragment extends Fragment {
+public class ItemsFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
-    private TextView textView_checkout;
-    private Button btn_checkout;
-    private ImageView imageView_QRCode;
-    private String convertToQr;
+    private String mParam1;
+    private String mParam2;
 
     private OnFragmentInteractionListener mListener;
 
-    public CheckoutFragment() {
+    public ItemsFragment() {
         // Required empty public constructor
     }
 
@@ -56,11 +44,11 @@ public class CheckoutFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment CheckoutFragment.
+     * @return A new instance of fragment ItemsFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static CheckoutFragment newInstance(String param1, String param2) {
-        CheckoutFragment fragment = new CheckoutFragment();
+    public static ItemsFragment newInstance(String param1, String param2) {
+        ItemsFragment fragment = new ItemsFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -72,6 +60,8 @@ public class CheckoutFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
@@ -79,29 +69,7 @@ public class CheckoutFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_checkout, container, false);
-
-
-
-        textView_checkout = (TextView)v.findViewById(R.id.total_amount);
-        btn_checkout = (Button)v.findViewById(R.id.btn_checkout);
-        imageView_QRCode = (ImageView) v.findViewById(R.id.QR_Image);
-
-        btn_checkout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                convertToQr = textView_checkout.getText().toString().trim();
-                MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
-                try{
-                    BitMatrix bitMatrix = multiFormatWriter.encode(convertToQr, BarcodeFormat.QR_CODE, 200, 200);
-                    BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
-                    Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
-                    imageView_QRCode.setImageBitmap(bitmap);
-                }catch (WriterException e){
-                    e.printStackTrace();
-                }
-            }
-        });
+        View v = inflater.inflate(R.layout.fragment_items, container, false);
         return v;
     }
 

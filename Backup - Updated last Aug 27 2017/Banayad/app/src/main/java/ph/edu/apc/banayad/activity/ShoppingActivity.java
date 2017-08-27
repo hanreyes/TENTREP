@@ -2,16 +2,13 @@ package ph.edu.apc.banayad.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -24,7 +21,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import ph.edu.apc.banayad.Manifest;
 import ph.edu.apc.banayad.R;
 import ph.edu.apc.banayad.fragment.CartFragment;
 import ph.edu.apc.banayad.fragment.CheckoutFragment;
@@ -45,8 +41,6 @@ CheckoutFragment.OnFragmentInteractionListener, ItemsFragment.OnFragmentInteract
 
     public static String currentTransaction;
     public static int status = 0;
-
-    public static int MY_PERMISSIONS_REQUEST_CAMERA;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,8 +122,10 @@ CheckoutFragment.OnFragmentInteractionListener, ItemsFragment.OnFragmentInteract
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_scan:
-                    Intent in = new Intent(ShoppingActivity.this, Scanning.class);
-                    startActivity(in);
+
+
+                Intent in = new Intent(ShoppingActivity.this, Scanning.class);
+                startActivity(in);
         }
     }
 }
