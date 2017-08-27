@@ -108,7 +108,6 @@ CheckoutFragment.OnFragmentInteractionListener, ItemsFragment.OnFragmentInteract
                 database.getReference("user")
                         .child(user.getUid())
                         .child("transactions")
-                        //.child(currentTransaction)
                         .removeValue();
                 startActivity(intent);
                 finish();

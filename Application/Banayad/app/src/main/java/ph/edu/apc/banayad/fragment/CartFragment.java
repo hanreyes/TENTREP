@@ -90,23 +90,22 @@ public class CartFragment extends Fragment {
 
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("user");
 
-            FirebaseRecyclerAdapter<Item, CartHolder> adapter =
-                    new FirebaseRecyclerAdapter<Item, CartHolder>(
-                            Item.class,
-                            R.layout.cart_view_holder,
-                            CartHolder.class,
-                            ref.child(user.getUid())
-                                    .child("transactions")
-                                    //.child(currentTransaction)
-                    ) {
-                        @Override
-                        protected void populateViewHolder(CartHolder viewHolder, Item model, int position) {
-                            viewHolder.setItemBarcode(model.getmBarcode());
-                            viewHolder.setItemName(model.getmName());
-                            viewHolder.setItemPrice(model.getmPrice());
-                        }
-                    };
-            itemsCart.setAdapter(adapter);
+        FirebaseRecyclerAdapter<Item, CartHolder> adapter =
+                new FirebaseRecyclerAdapter<Item, CartHolder>(
+                        Item.class,
+                        R.layout.cart_view_holder,
+                        CartHolder.class,
+                        ref.child(user.getUid())
+                                .child("transactions")
+                ) {
+                    @Override
+                    protected void populateViewHolder(CartHolder viewHolder, Item model, int position) {
+                        viewHolder.setItemBarcode(model.getmBarcode());
+                        viewHolder.setItemName(model.getmName());
+                        viewHolder.setItemPrice(model.getmPrice());
+                    }
+                };
+        itemsCart.setAdapter(adapter);
         return rootView;
     }
 

@@ -3,6 +3,7 @@ package ph.edu.apc.banayad.other;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -67,11 +68,12 @@ public class Scanning extends AppCompatActivity implements ZXingScannerView.Resu
 
     @Override
     public void handleResult(Result rawResult) {
-        // Do something with the result here
-        addItem("Notebook " + rawResult.getText(), "60", "1");
+        // add the item to database
+        addItem("" + findItemName(rawResult.getText()) + rawResult.getText(),
+                "" + findItemPrice(rawResult.getText()),
+                "1");
         //onBackPressed();
         Toast.makeText(this, "" + rawResult.getText(), Toast.LENGTH_LONG).show();
-
         // If you would like to resume scanning, call this method below:
         mScannerView.resumeCameraPreview(this);
     }
@@ -83,22 +85,52 @@ public class Scanning extends AppCompatActivity implements ZXingScannerView.Resu
         db.child("user")
                 .child(user.getUid())
                 .child("transactions")
-                //.child(currentTransaction)
                 .push()
                 .setValue(item);
     }
 
     private String findItemName(String barcode) {
+        final String[] iName = {null};
         DatabaseReference db = FirebaseDatabase.getInstance().getReference();
-        DatabaseReference itemsDb = db.child("items");
+        final DatabaseReference nameRef = db.child("items").child(barcode);
 
-        return "fuck you";
+        nameRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    Item item = dataSnapshot.getValue(Item.class);
+                    iName[0] = item.getmName();
+                } else {
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        return iName[0];
     }
 
     private String findItemPrice(String barcode) {
+        final String[] price = {null};
         DatabaseReference db = FirebaseDatabase.getInstance().getReference();
-        DatabaseReference itemsDb = db.child("price");
+        DatabaseReference nameRef = db.child("items/" + barcode);
 
-        return "too expensive";
+        nameRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Item item = dataSnapshot.getValue(Item.class);
+                price[0] = item.getmPrice();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        return price[0];
     }
 }
