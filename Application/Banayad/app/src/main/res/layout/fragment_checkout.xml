@@ -28,7 +28,7 @@
             android:layout_marginTop="16dp"
             android:id="@+id/total_amount"
             android:textSize="18sp"
-            android:text="TESTING"/>
+            android:hint="P0.0"/>
 
     </LinearLayout>
 
@@ -44,8 +44,5 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/QR_Image"/>
-
-
-
 
 </LinearLayout>

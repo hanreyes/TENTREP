@@ -5,41 +5,41 @@ package ph.edu.apc.banayad.models;
  */
 
 public class Item {
-    private String itemName;
-    private String itemPrice;
-    private String itemBarcode;
+    private String mName;
+    private String mPrice;
+    private String mBarcode;
 
     public Item() {
         // ..
     }
 
-    public Item(String itemName, String itemPrice, String itemQuantity) {
-        this.itemName = itemName;
-        this.itemPrice = itemPrice;
-        this.itemBarcode = itemQuantity;
+    public Item(String name, String price, String quantity) {
+        this.mName = name;
+        this.mPrice = price;
+        this.mBarcode = quantity;
     }
 
-    public String getItemName() {
-        return itemName;
+    public String getmName() {
+        return mName;
     }
 
-    public void setItemName(String itemName) {
-        this.itemName = itemName;
+    public void setmName(String mName) {
+        this.mName = mName;
     }
 
-    public String getItemPrice() {
-        return itemPrice;
+    public String getmPrice() {
+        return mPrice;
     }
 
-    public void setItemPrice(String itemPrice) {
-        this.itemPrice = itemPrice;
+    public void setmPrice(String mPrice) {
+        this.mPrice = mPrice;
     }
 
-    public String getItemBarcode() {
-        return itemBarcode;
+    public String getmBarcode() {
+        return mBarcode;
     }
 
-    public void setItemBarcode(String itemBarcode) {
-        this.itemBarcode = itemBarcode;
+    public void setmBarcode(String mBarcode) {
+        this.mBarcode = mBarcode;
     }
 }
