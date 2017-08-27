@@ -24,7 +24,6 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView;
 import ph.edu.apc.banayad.models.Item;
 
 import static ph.edu.apc.banayad.activity.ShoppingActivity.currentTransaction;
-import static ph.edu.apc.banayad.activity.ShoppingActivity.status;
 
 public class Scanning extends AppCompatActivity implements ZXingScannerView.ResultHandler{
 
@@ -55,20 +54,10 @@ public class Scanning extends AppCompatActivity implements ZXingScannerView.Resu
         mScannerView.stopCamera();           // Stop camera on pause
     }
 
-    // models for items
-    public static class Items {
-        public String barcode;
-        public String itemName;
-
-        public Items(String barcode, String itemName) {
-            // ..
-        }
-    }
-
     @Override
     public void handleResult(Result rawResult) {
         // Do something with the result here
-        addItem("Peanut butter", "60", rawResult.getText());
+        addItem("Notebook " + rawResult.getText(), "60", "1");
         //onBackPressed();
         Toast.makeText(this, "" + rawResult.getText(), Toast.LENGTH_LONG).show();
 
@@ -83,7 +72,7 @@ public class Scanning extends AppCompatActivity implements ZXingScannerView.Resu
         db.child("user")
                 .child(user.getUid())
                 .child("transactions")
-                .child(currentTransaction)
+                //.child(currentTransaction)
                 .push()
                 .setValue(item);
     }

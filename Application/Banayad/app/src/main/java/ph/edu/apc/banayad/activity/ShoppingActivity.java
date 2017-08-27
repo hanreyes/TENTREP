@@ -40,7 +40,6 @@ CheckoutFragment.OnFragmentInteractionListener, ItemsFragment.OnFragmentInteract
     private FirebaseUser user;
 
     public static String currentTransaction;
-    public static int status = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,7 +102,8 @@ CheckoutFragment.OnFragmentInteractionListener, ItemsFragment.OnFragmentInteract
                 database.getReference("user")
                         .child(user.getUid())
                         .child("transactions")
-                        .child(currentTransaction).removeValue();
+                        //.child(currentTransaction)
+                        .removeValue();
                 startActivity(intent);
                 finish();
             }

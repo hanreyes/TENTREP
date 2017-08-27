@@ -21,8 +21,6 @@ import ph.edu.apc.banayad.R;
 import ph.edu.apc.banayad.models.Item;
 
 import static ph.edu.apc.banayad.activity.ShoppingActivity.currentTransaction;
-import static ph.edu.apc.banayad.activity.ShoppingActivity.status;
-
 
 /**
  * A simple {@link Fragment} subclass.
@@ -92,7 +90,6 @@ public class CartFragment extends Fragment {
 
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("user");
 
-        if (status == 1) {
             FirebaseRecyclerAdapter<Item, CartHolder> adapter =
                     new FirebaseRecyclerAdapter<Item, CartHolder>(
                             Item.class,
@@ -100,16 +97,16 @@ public class CartFragment extends Fragment {
                             CartHolder.class,
                             ref.child(user.getUid())
                                     .child("transactions")
-                                    .child(currentTransaction)) {
+                                    //.child(currentTransaction)
+                    ) {
                         @Override
                         protected void populateViewHolder(CartHolder viewHolder, Item model, int position) {
-                            viewHolder.setItemBarcode(model.getItemBarcode());
-                            viewHolder.setItemName(model.getItemName());
-                            viewHolder.setItemPrice(model.getItemPrice());
+                            viewHolder.setItemBarcode(model.getmBarcode());
+                            viewHolder.setItemName(model.getmName());
+                            viewHolder.setItemPrice(model.getmPrice());
                         }
                     };
             itemsCart.setAdapter(adapter);
-        }
         return rootView;
     }
 
