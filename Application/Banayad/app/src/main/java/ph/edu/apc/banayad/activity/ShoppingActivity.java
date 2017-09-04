@@ -2,36 +2,27 @@ package ph.edu.apc.banayad.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import ph.edu.apc.banayad.Manifest;
 import ph.edu.apc.banayad.R;
 import ph.edu.apc.banayad.fragment.CartFragment;
 import ph.edu.apc.banayad.fragment.CheckoutFragment;
 import ph.edu.apc.banayad.fragment.ItemsFragment;
-import ph.edu.apc.banayad.models.Item;
 import ph.edu.apc.banayad.other.PageAdapter;
-import ph.edu.apc.banayad.other.Scanning;
 
 public class ShoppingActivity extends FragmentActivity implements CartFragment.OnFragmentInteractionListener,
 CheckoutFragment.OnFragmentInteractionListener, ItemsFragment.OnFragmentInteractionListener, View.OnClickListener{
@@ -43,9 +34,13 @@ CheckoutFragment.OnFragmentInteractionListener, ItemsFragment.OnFragmentInteract
     private FirebaseAuth mAuth;
     private FirebaseUser user;
 
+    private FloatingActionButton floatingActionButton;
+
     public static String currentTransaction;
 
     public static int MY_PERMISSIONS_REQUEST_CAMERA;
+
+    public static int price = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +49,8 @@ CheckoutFragment.OnFragmentInteractionListener, ItemsFragment.OnFragmentInteract
 
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
+
+        floatingActionButton = (FloatingActionButton) findViewById(R.id.btn_scan);
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         currentTransaction = database.getReference("user")
@@ -97,6 +94,7 @@ CheckoutFragment.OnFragmentInteractionListener, ItemsFragment.OnFragmentInteract
     @Override
     public void onBackPressed() {
         //super.onBackPressed();
+        price = 0;
         AlertDialog.Builder builder = new AlertDialog.Builder(ShoppingActivity.this);
         builder.setMessage("This will delete current cart items.").setTitle("End this session?");
         // Alert Dialog buttons
@@ -108,7 +106,6 @@ CheckoutFragment.OnFragmentInteractionListener, ItemsFragment.OnFragmentInteract
                 database.getReference("user")
                         .child(user.getUid())
                         .child("transactions")
-                        //.child(currentTransaction)
                         .removeValue();
                 startActivity(intent);
                 finish();
@@ -128,7 +125,7 @@ CheckoutFragment.OnFragmentInteractionListener, ItemsFragment.OnFragmentInteract
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_scan:
-                    Intent in = new Intent(ShoppingActivity.this, Scanning.class);
+                    Intent in = new Intent(ShoppingActivity.this, ScanningActivity.class);
                     startActivity(in);
         }
     }

@@ -20,8 +20,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import ph.edu.apc.banayad.R;
 import ph.edu.apc.banayad.models.Item;
 
-import static ph.edu.apc.banayad.activity.ShoppingActivity.currentTransaction;
-
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
@@ -90,40 +88,42 @@ public class CartFragment extends Fragment {
 
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("user");
 
-            FirebaseRecyclerAdapter<Item, CartHolder> adapter =
-                    new FirebaseRecyclerAdapter<Item, CartHolder>(
-                            Item.class,
-                            R.layout.cart_view_holder,
-                            CartHolder.class,
-                            ref.child(user.getUid())
-                                    .child("transactions")
-                                    //.child(currentTransaction)
-                    ) {
-                        @Override
-                        protected void populateViewHolder(CartHolder viewHolder, Item model, int position) {
-                            viewHolder.setItemBarcode(model.getmBarcode());
-                            viewHolder.setItemName(model.getmName());
-                            viewHolder.setItemPrice(model.getmPrice());
-                        }
-                    };
-            itemsCart.setAdapter(adapter);
+        FirebaseRecyclerAdapter<Item, CartHolder> adapter =
+                new FirebaseRecyclerAdapter<Item, CartHolder>(
+                        Item.class,
+                        R.layout.cart_view_holder,
+                        CartHolder.class,
+                        ref.child(user.getUid())
+                                .child("transactions")
+                ) {
+                    @Override
+                    protected void populateViewHolder(CartHolder viewHolder, Item model, int position) {
+                        viewHolder.setItemQty("1");
+                        viewHolder.setItemName(model.getmName());
+                        viewHolder.setItemBarcode(model.getmBarcode());
+                        viewHolder.setItemPrice(model.getmPrice());
+                    }
+                };
+        itemsCart.setAdapter(adapter);
         return rootView;
     }
 
     public static class CartHolder extends RecyclerView.ViewHolder {
-        private final TextView itemBarcode;
+        private final TextView itemQty;
         private final TextView itemName;
         private final TextView itemPrice;
+        private final TextView itemBarcode;
 
         public CartHolder(View itemView) {
             super(itemView);
-            itemBarcode = (TextView) itemView.findViewById(R.id.textViewQuantity);
+            itemQty = (TextView) itemView.findViewById(R.id.textViewQuantity);
             itemName = (TextView) itemView.findViewById(R.id.textViewItemName);
             itemPrice = (TextView) itemView.findViewById(R.id.textViewPrice);
+            itemBarcode = (TextView) itemView.findViewById(R.id.textViewBarcode);
         }
 
-        public void setItemBarcode(String itemBarcode) {
-            this.itemBarcode.setText(itemBarcode);
+        public void setItemQty(String itemQty) {
+            this.itemQty.setText(itemQty);
         }
 
         public void setItemName(String itemName) {
@@ -132,6 +132,10 @@ public class CartFragment extends Fragment {
 
         public void setItemPrice(String itemPrice) {
             this.itemPrice.setText(itemPrice);
+        }
+
+        public void setItemBarcode(String barcode) {
+            itemBarcode.setText(barcode);
         }
     }
 

@@ -16,7 +16,6 @@
         <activity android:name=".activity.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -26,7 +25,7 @@
             android:name=".activity.MainActivity"
             android:label="@string/title_activity_navigation_drawer"
             android:theme="@style/Banayad" />
-        <activity android:name=".other.Scanning"></activity>
+        <activity android:name=".activity.ScanningActivity"></activity>
     </application>
     <uses-permission android:name="android.permission.CAMERA" />
 </manifest>
