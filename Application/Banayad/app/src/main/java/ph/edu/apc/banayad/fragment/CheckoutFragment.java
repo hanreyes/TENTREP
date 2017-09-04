@@ -1,17 +1,22 @@
 package ph.edu.apc.banayad.fragment;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
@@ -22,6 +27,10 @@ import com.journeyapps.barcodescanner.BarcodeEncoder;
 import org.w3c.dom.Text;
 
 import ph.edu.apc.banayad.R;
+import ph.edu.apc.banayad.activity.ScanningActivity;
+import ph.edu.apc.banayad.activity.ShoppingActivity;
+
+import static ph.edu.apc.banayad.activity.ShoppingActivity.price;
 
 
 /**
@@ -81,25 +90,49 @@ public class CheckoutFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_checkout, container, false);
 
-
+        DisplayMetrics dm = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
+        final int width = dm.widthPixels;
 
         textView_checkout = (TextView)v.findViewById(R.id.total_amount);
         btn_checkout = (Button)v.findViewById(R.id.btn_checkout);
         imageView_QRCode = (ImageView) v.findViewById(R.id.QR_Image);
 
+        textView_checkout.setText(String.valueOf(price));
+
         btn_checkout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                convertToQr = textView_checkout.getText().toString().trim();
-                MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
-                try{
-                    BitMatrix bitMatrix = multiFormatWriter.encode(convertToQr, BarcodeFormat.QR_CODE, 200, 200);
-                    BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
-                    Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
-                    imageView_QRCode.setImageBitmap(bitmap);
-                }catch (WriterException e){
-                    e.printStackTrace();
-                }
+                textView_checkout.setText(String.valueOf(price));
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setMessage("Total price is " + price).setTitle("Do you want to checkout?");
+                // Alert Dialog buttons
+                builder.setPositiveButton("Checkout", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        convertToQr = textView_checkout.getText().toString().trim();
+                        MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
+                        try{
+                            BitMatrix bitMatrix = multiFormatWriter.encode(
+                                    convertToQr, BarcodeFormat.QR_CODE, width, width);
+                            BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
+                            Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
+                            imageView_QRCode.setImageBitmap(bitmap);
+                        }catch (WriterException e){
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                });
+                final AlertDialog dialog = builder.create();
+                dialog.show();
+
             }
         });
         return v;
