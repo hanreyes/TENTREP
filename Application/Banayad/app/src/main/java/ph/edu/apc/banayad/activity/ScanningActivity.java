@@ -98,18 +98,13 @@ public class ScanningActivity extends AppCompatActivity implements ZXingScannerV
         nameRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                if (dataSnapshot.exists()) {
-                    Item item = dataSnapshot.getValue(Item.class);
-                    addItem(item.getmName(), item.getmPrice(), item.getmBarcode());
+                Item item = dataSnapshot.getValue(Item.class);
+                addItem(item.getmName(), item.getmPrice(), item.getmBarcode());
 
-                    // increment price
-                    price += Integer.parseInt(item.getmPrice());
+                // increment price
+                price += Integer.parseInt(item.getmPrice());
 
-                    Log.e("itemName", "" + item.getmName());
-                } else {
-                    Toast.makeText(ScanningActivity.this, "No item", Toast.LENGTH_LONG).show();
-                    Log.e("itemName", "no item found");
-                }
+                Log.e("itemName", "" + item.getmName());
             }
 
             @Override

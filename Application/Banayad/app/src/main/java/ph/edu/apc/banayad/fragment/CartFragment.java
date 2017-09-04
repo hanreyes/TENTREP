@@ -1,14 +1,18 @@
 package ph.edu.apc.banayad.fragment;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -18,6 +22,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import ph.edu.apc.banayad.R;
+import ph.edu.apc.banayad.activity.ScanningActivity;
 import ph.edu.apc.banayad.models.Item;
 
 /**
@@ -74,6 +79,8 @@ public class CartFragment extends Fragment {
     private FirebaseAuth mAuth;
     private FirebaseUser user;
 
+    FirebaseRecyclerAdapter<Item, CartHolder> adapter;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -88,8 +95,7 @@ public class CartFragment extends Fragment {
 
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("user");
 
-        FirebaseRecyclerAdapter<Item, CartHolder> adapter =
-                new FirebaseRecyclerAdapter<Item, CartHolder>(
+        adapter = new FirebaseRecyclerAdapter<Item, CartHolder>(
                         Item.class,
                         R.layout.cart_view_holder,
                         CartHolder.class,
@@ -97,11 +103,39 @@ public class CartFragment extends Fragment {
                                 .child("transactions")
                 ) {
                     @Override
-                    protected void populateViewHolder(CartHolder viewHolder, Item model, int position) {
+                    protected void populateViewHolder(CartHolder viewHolder, Item model, final int position) {
                         viewHolder.setItemQty("1");
                         viewHolder.setItemName(model.getmName());
                         viewHolder.setItemBarcode(model.getmBarcode());
                         viewHolder.setItemPrice(model.getmPrice());
+
+                        final String name = model.getmName();
+
+                        viewHolder.mView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                                builder.setMessage("Delete " + name + " from your cart?")
+                                        .setTitle("Remove item from cart");
+                                // Alert Dialog buttons
+                                builder.setPositiveButton("Remove", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        adapter.getRef(position).removeValue();
+                                    }
+                                });
+                                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                                    }
+                                });
+                                AlertDialog dialog = builder.create();
+                                dialog.show();
+                                Button negBtn = dialog.getButton(DialogInterface.BUTTON_NEGATIVE);
+                                negBtn.setTextColor(Color.GRAY);
+                            }
+                        });
                     }
                 };
         itemsCart.setAdapter(adapter);
@@ -113,6 +147,7 @@ public class CartFragment extends Fragment {
         private final TextView itemName;
         private final TextView itemPrice;
         private final TextView itemBarcode;
+        private final View mView;
 
         public CartHolder(View itemView) {
             super(itemView);
@@ -120,6 +155,7 @@ public class CartFragment extends Fragment {
             itemName = (TextView) itemView.findViewById(R.id.textViewItemName);
             itemPrice = (TextView) itemView.findViewById(R.id.textViewPrice);
             itemBarcode = (TextView) itemView.findViewById(R.id.textViewBarcode);
+            mView = itemView;
         }
 
         public void setItemQty(String itemQty) {
